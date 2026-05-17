@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -7,11 +8,17 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('assignments', function (Blueprint $table) {
             $table->id('id_assignment');
-            $table->unsignedBigInteger('id_outlet');
+
+            // RELASI OUTLET SUDAH DIBUANG TOTAL! ❌
+
             $table->unsignedBigInteger('id_user_surveyor')->nullable();
             $table->unsignedBigInteger('id_user_pemasang')->nullable();
 
             $table->string('no_sps')->nullable();
+
+            // PENGGANTI OUTLET: Teks bebas agar jauh lebih fleksibel ✅
+            $table->string('nama_pekerjaan')->nullable();
+
             $table->string('nama_brand')->nullable();
             $table->enum('prioritas', ['Standart', 'Urgent'])->default('Standart');
             $table->text('catatan_pekerjaan')->nullable();
@@ -32,8 +39,7 @@ return new class extends Migration {
 
             $table->timestamps();
 
-            // Relasi ke tabel Outlets dan Users (bawaan Laravel)
-            $table->foreign('id_outlet')->references('id_outlet')->on('outlets')->onDelete('cascade');
+            // Relasi hanya untuk user saja
             $table->foreign('id_user_surveyor')->references('id')->on('users')->onDelete('set null');
             $table->foreign('id_user_pemasang')->references('id')->on('users')->onDelete('set null');
         });
