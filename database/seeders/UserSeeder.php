@@ -5,43 +5,38 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // KELOMPOK SUPER ADMIN
-        $super_admins = [
-            ['name' => 'Bapak Direktur', 'email' => 'direktur@mustika.com', 'role' => 'super_admin', 'jabatan' => 'Direktur'],
-            ['name' => 'Bapak CIO', 'email' => 'cio@mustika.com', 'role' => 'super_admin', 'jabatan' => 'CIO'],
-            ['name' => 'Bapak JM', 'email' => 'jm@mustika.com', 'role' => 'super_admin', 'jabatan' => 'JM'],
-            ['name' => 'Admin Utama', 'email' => 'admin@mustika.com', 'role' => 'super_admin', 'jabatan' => 'Admin'],
+        // Menghapus data akun dummy yang lama agar tidak bentrok
+        DB::table('users')->delete();
+
+        // DATA KARYAWAN ASLI CV. MUSTIKA
+        $users = [
+            // KELOMPOK SUPER USER & ADMIN (Hak Akses: super_admin)
+            ['name' => 'Amang Zainuri', 'email' => 'amang@mustika.com', 'role' => 'super_admin', 'jabatan' => 'Super User'],
+            ['name' => 'Yoyon', 'email' => 'yoyon@mustika.com', 'role' => 'super_admin', 'jabatan' => 'Super User'],
+            ['name' => 'Arik Setiawan', 'email' => 'arik@mustika.com', 'role' => 'super_admin', 'jabatan' => 'Super User'],
+            ['name' => 'Lia', 'email' => 'lia@mustika.com', 'role' => 'super_admin', 'jabatan' => 'Admin Utama'],
+
+            // KELOMPOK LAPANGAN & PRODUKSI (Hak Akses: staff)
+            ['name' => 'Rega', 'email' => 'rega@mustika.com', 'role' => 'staff', 'jabatan' => 'Tim Survey & Desain'],
+            ['name' => 'Rangga', 'email' => 'rangga@mustika.com', 'role' => 'staff', 'jabatan' => 'Tim Survey & Desain'],
+            ['name' => 'Agus Kurniawan', 'email' => 'agus@mustika.com', 'role' => 'staff', 'jabatan' => 'Head Produksi (Probolinggo)'],
+            ['name' => 'Yogi', 'email' => 'yogi@mustika.com', 'role' => 'staff', 'jabatan' => 'Head Produksi (Malang)'],
         ];
 
-        foreach ($super_admins as $user) {
+        // Looping untuk memasukkan data ke database
+        foreach ($users as $user) {
             User::create([
                 'name' => $user['name'],
                 'email' => $user['email'],
                 'role' => $user['role'],
                 'jabatan' => $user['jabatan'],
-                'password' => Hash::make('mustika123') 
-            ]);
-        }
-
-        // KELOMPOK STAFF BIASA
-        $staff_biasa = [
-            ['name' => 'Mas Desainer', 'email' => 'desainer@mustika.com', 'role' => 'staff', 'jabatan' => 'Desainer'],
-            ['name' => 'Pak Produksi', 'email' => 'produksi@mustika.com', 'role' => 'staff', 'jabatan' => 'Produksi'],
-            ['name' => 'Tim Surveyor', 'email' => 'surveyor@mustika.com', 'role' => 'staff', 'jabatan' => 'Surveyor'],
-        ];
-
-        foreach ($staff_biasa as $user) {
-            User::create([
-                'name' => $user['name'],
-                'email' => $user['email'],
-                'role' => $user['role'],
-                'jabatan' => $user['jabatan'],
-                'password' => Hash::make('staff123')
+                'password' => Hash::make('mustika123') // Password seragam untuk awal
             ]);
         }
     }
