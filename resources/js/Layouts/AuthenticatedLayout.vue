@@ -1,11 +1,12 @@
 <script setup>
 import { ref } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
-// Mengambil ikon-ikon profesional dari Lucide
+// Mengambil ikon-ikon profesional dari Lucide (Ditambah FolderOpen)
 import {
     LayoutDashboard, Users, Database, FileText,
     PenTool, Hammer, Wrench, ChevronDown,
-    Menu, Bell, Search, LogOut, User as UserIcon
+    Menu, Bell, Search, LogOut, User as UserIcon,
+    FolderOpen
 } from 'lucide-vue-next';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -71,7 +72,14 @@ const toggleSubMenu = (menuName) => {
                         Input & Workflow
                     </div>
 
-                   <Link :href="route('sps.create')"
+                    <Link :href="route('pekerjaan.index')"
+                          class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all"
+                          :class="{ 'bg-blue-600 text-white shadow-md hover:bg-blue-700': route().current('pekerjaan.index'), 'text-gray-400 hover:bg-[#2b303b] hover:text-white': !route().current('pekerjaan.index') }">
+                        <FolderOpen class="w-5 h-5 shrink-0" />
+                        <span v-show="isSidebarOpen" class="font-medium text-sm">Daftar Pekerjaan</span>
+                    </Link>
+
+                    <Link :href="route('sps.create')"
                           class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all"
                           :class="{ 'bg-blue-600 text-white shadow-md hover:bg-blue-700': route().current('sps.create'), 'text-gray-400 hover:bg-[#2b303b] hover:text-white': !route().current('sps.create') }">
                         <FileText class="w-5 h-5 shrink-0" />

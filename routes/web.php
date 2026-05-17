@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SpsController; 
+use App\Http\Controllers\SpsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -63,12 +63,20 @@ Route::get('/dashboard', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
 
     // --- Rute Penerimaan SPS (Pekerjaan Baru) ---
-    Route::get('/penerimaan-sps/create', [SpsController::class, 'create'])->name('sps.create');
-    Route::post('/penerimaan-sps', [SpsController::class, 'store'])->name('sps.store');
+    Route::get('/pekerjaan', [SpsController::class, 'index'])->name('pekerjaan.index'); // <-- TAMBAHKAN INI
+        Route::get('/penerimaan-sps/create', [SpsController::class, 'create'])->name('sps.create');
+        Route::post('/penerimaan-sps', [SpsController::class, 'store'])->name('sps.store');
+
+    // --- Rute DETAIL, UPDATE, & DELETE PEKERJAAN (BARU) ---
+    Route::get('/pekerjaan/{id}/edit', [SpsController::class, 'edit'])->name('pekerjaan.edit');
+    Route::put('/pekerjaan/{id}', [SpsController::class, 'update'])->name('pekerjaan.update');
+    Route::delete('/pekerjaan/{id}', [SpsController::class, 'destroy'])->name('pekerjaan.destroy');
 
     // --- Rute Profile ---
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+
 });
 
 require __DIR__.'/auth.php';
