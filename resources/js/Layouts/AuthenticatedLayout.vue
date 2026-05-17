@@ -71,10 +71,12 @@ const toggleSubMenu = (menuName) => {
                         Input & Workflow
                     </div>
 
-                    <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all hover:bg-[#2b303b] hover:text-white">
+                   <Link :href="route('sps.create')"
+                          class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all"
+                          :class="{ 'bg-blue-600 text-white shadow-md hover:bg-blue-700': route().current('sps.create'), 'text-gray-400 hover:bg-[#2b303b] hover:text-white': !route().current('sps.create') }">
                         <FileText class="w-5 h-5 shrink-0" />
                         <span v-show="isSidebarOpen" class="font-medium text-sm">Penerimaan SPS</span>
-                    </a>
+                    </Link>
 
                     <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all hover:bg-[#2b303b] hover:text-white">
                         <PenTool class="w-5 h-5 shrink-0" />

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SpsController; 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -18,7 +19,7 @@ Route::get('/dashboard', function () {
     $menungguSurvey = DB::table('assignments')->where('status_workflow', 'Survey')->count();
     $prosesProduksi = DB::table('assignments')->where('status_workflow', 'Produksi')->count();
 
-    // Mengambil 10 antrean pekerjaan terbaru, join dengan tabel toko dan user
+    // Mengambil 10 antrean pekerjaan terbaru
     $recentJobs = DB::table('assignments')
         ->join('users', 'assignments.id_user_surveyor', '=', 'users.id')
         ->select(
@@ -32,7 +33,7 @@ Route::get('/dashboard', function () {
         ->limit(10)
         ->get()
         ->map(function ($job) {
-            // ... (kode pewarnaan color biarkan sama)
+            // Pewarnaan status
             $statusLower = strtolower($job->status);
             if (str_contains($statusLower, 'lunas') || str_contains($statusLower, 'pemasangan')) {
                 $job->color = 'bg-emerald-100 text-emerald-700 border-emerald-200';
@@ -58,8 +59,14 @@ Route::get('/dashboard', function () {
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-// 3. Rute Profile
-Route::middleware('auth')->group(function () {
+// 3. Rute Fitur & Modul Aplikasi (Harus Login)
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    // --- Rute Penerimaan SPS (Pekerjaan Baru) ---
+    Route::get('/penerimaan-sps/create', [SpsController::class, 'create'])->name('sps.create');
+    Route::post('/penerimaan-sps', [SpsController::class, 'store'])->name('sps.store');
+
+    // --- Rute Profile ---
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
